@@ -53,6 +53,29 @@
       left: 0;
       pointer-events: none;
     }
+    #celebration {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 25px;
+  border-radius: 20px;
+  display: none;
+  z-index: 10;
+}
+
+#celebration h2 {
+  margin-bottom: 15px;
+  color: #ff4d6d;
+}
+
+#celebration img {
+  width: 200px;
+  border-radius: 15px;
+}
+
   </style>
 </head>
 <body>
@@ -129,13 +152,21 @@
 
     animate();
 
-    yesBtn.addEventListener("click", () => {
-      firework(window.innerWidth / 2, window.innerHeight / 2);
-      setTimeout(() => {
-        alert("Artık sevgiliyiz 💘🎉");
-      }, 300);
-    });
+   yesBtn.addEventListener("click", () => {
+  firework(window.innerWidth / 2, window.innerHeight / 2);
+  firework(window.innerWidth / 3, window.innerHeight / 2);
+  firework(window.innerWidth * 0.7, window.innerHeight / 2);
+
+  setTimeout(() => {
+    document.getElementById("celebration").style.display = "block";
+  }, 800);
+});
+
   </script>
+<div id="celebration">
+  <h2>YAAA EVET DEDİ 😍💘</h2>
+  <img src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif" alt="love gif">
+</div>
 
 </body>
 </html>
