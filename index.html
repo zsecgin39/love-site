@@ -57,7 +57,7 @@
 </head>
 <body>
 
-  <h1>Benimle sevgili olur musun? 💖</h1>
+  <h1>Benimle sevgili olur musun Sueda? 💖</h1>
 
   <div class="buttons">
     <button id="yes">Evet 😍</button>
@@ -73,7 +73,7 @@
     let yesScale = 1;
 
     noBtn.addEventListener("click", () => {
-      yesScale += 0.2;
+      yesScale += 0.35;
       yesBtn.style.transform = `scale(${yesScale})`;
     });
 
@@ -89,7 +89,7 @@
     }
 
     function firework(x, y) {
-      for (let i = 0; i < 80; i++) {
+      for (let i = 0; i < 150; i++) {
         particles.push({
           x,
           y,
