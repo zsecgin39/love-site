@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Bir Sorum Var 💖</title>
+
   <style>
     body {
       margin: 0;
@@ -16,6 +17,12 @@
       overflow: hidden;
     }
 
+    #questionGif {
+      width: 220px;
+      margin-bottom: 20px;
+      border-radius: 18px;
+    }
+
     h1 {
       color: #fff;
       margin-bottom: 30px;
@@ -25,6 +32,7 @@
     .buttons {
       display: flex;
       gap: 20px;
+      z-index: 2;
     }
 
     button {
@@ -53,32 +61,58 @@
       left: 0;
       pointer-events: none;
     }
+
+    /* Celebration popup */
     #celebration {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 25px;
-  border-radius: 20px;
-  display: none;
-  z-index: 10;
-}
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 25px;
+      border-radius: 20px;
+      display: none;
+      z-index: 10;
+    }
 
-#celebration h2 {
-  margin-bottom: 15px;
-  color: #ff4d6d;
-}
+    #celebration h2 {
+      margin-bottom: 15px;
+      color: #ff4d6d;
+    }
 
-#celebration img {
-  width: 200px;
-  border-radius: 15px;
-}
+    #celebration img {
+      width: 200px;
+      border-radius: 15px;
+    }
 
+    /* Kalp yağmuru */
+    .heart {
+      position: fixed;
+      top: -20px;
+      color: #ff4d6d;
+      font-size: 20px;
+      animation: fall linear forwards;
+      z-index: 1;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+        opacity: 0;
+      }
+    }
   </style>
 </head>
+
 <body>
+
+  <!-- GIF SORUNUN ÜSTÜNDE -->
+  <img
+    id="questionGif"
+    src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmZzdWo4aHZjMGptajh3aGwwcmFpbnNmazl6cHFhMWR0bWNieXdveSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/yZ7Xya4covzN1WhOAa/giphy.gif"
+    alt="love gif"
+  />
 
   <h1>Benimle sevgili olur musun Sueda? 💖</h1>
 
@@ -88,6 +122,11 @@
   </div>
 
   <canvas id="fireworks"></canvas>
+
+  <div id="celebration">
+    <h2>YAAA EVET DEDİ 😍💘</h2>
+    <img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif">
+  </div>
 
   <script>
     const yesBtn = document.getElementById("yes");
@@ -100,35 +139,33 @@
       yesBtn.style.transform = `scale(${yesScale})`;
     });
 
-    // Fireworks
+    /* FIREWORKS */
     const canvas = document.getElementById("fireworks");
     const ctx = canvas.getContext("2d");
-
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+
+    const particles = [];
 
     function random(min, max) {
       return Math.random() * (max - min) + min;
     }
 
     function firework(x, y) {
-  const colors = ["#ff4d6d", "#ffd166", "#4cc9f0", "#c77dff", "#80ffdb"];
+      const colors = ["#ff4d6d", "#ffd166", "#4cc9f0", "#c77dff", "#80ffdb"];
 
-  for (let i = 0; i < 180; i++) {
-    particles.push({
-      x,
-      y,
-      angle: Math.random() * 2 * Math.PI,
-      speed: random(2, 8),
-      radius: random(2, 4),
-      alpha: 1,
-      color: colors[Math.floor(Math.random() * colors.length)]
-    });
-  }
-}
-
-
-    const particles = [];
+      for (let i = 0; i < 200; i++) {
+        particles.push({
+          x,
+          y,
+          angle: Math.random() * Math.PI * 2,
+          speed: random(2, 8),
+          radius: random(2, 4),
+          alpha: 1,
+          color: colors[Math.floor(Math.random() * colors.length)]
+        });
+      }
+    }
 
     function animate() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -138,36 +175,47 @@
         p.y += Math.sin(p.angle) * p.speed;
         p.alpha -= 0.015;
 
+        ctx.globalAlpha = p.alpha;
+        ctx.fillStyle = p.color;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, 2 * Math.PI);
-        ctx.fillStyle = p.color.replace(")", `,${p.alpha})`);
-
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
         ctx.fill();
 
         if (p.alpha <= 0) particles.splice(i, 1);
       });
 
+      ctx.globalAlpha = 1;
       requestAnimationFrame(animate);
     }
 
     animate();
 
-   yesBtn.addEventListener("click", () => {
-  firework(window.innerWidth / 2, window.innerHeight / 2);
-  firework(window.innerWidth / 3, window.innerHeight / 2);
-  firework(window.innerWidth * 0.7, window.innerHeight / 2);
+    /* KALP YAĞMURU */
+    function heartRain() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.innerHTML = "💖";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = random(3, 6) + "s";
+      document.body.appendChild(heart);
 
-  setTimeout(() => {
-    document.getElementById("celebration").style.display = "block";
-  }, 800);
-});
+      setTimeout(() => heart.remove(), 6000);
+    }
 
+    /* EVET TIK */
+    yesBtn.addEventListener("click", () => {
+      firework(window.innerWidth / 2, window.innerHeight / 2);
+      firework(window.innerWidth / 3, window.innerHeight / 2);
+      firework(window.innerWidth * 0.7, window.innerHeight / 2);
+
+      setInterval(heartRain, 200);
+
+      setTimeout(() => {
+        document.getElementById("celebration").style.display = "block";
+      }, 800);
+    });
   </script>
-<div id="celebration">
-  <h2>YAAA EVET DEDİ 😍💘</h2>
-  <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmZzdWo4aHZjMGptajh3aGwwcmFpbnNmazl6cHFhMWR0bWNieXdveSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/yZ7Xya4covzN1WhOAa/giphy.gif" alt="love gif">
-
-</div>
 
 </body>
 </html>
+
